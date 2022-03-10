@@ -125,13 +125,12 @@ describe('findAllUsers',  () => {
   );
 
   // clean up after ourselves
-  afterAll(() => {
-             // delete the users we inserted
-             usernames.map(username =>
-                               deleteUsersByUsername(username)
-             )
-             Promise.all(usernames).then();
-           }
+  afterAll(async () => {
+    // delete the users we inserted
+    for (const u of usernames) {
+      const result = await deleteUsersByUsername(u);
+    }
+  }
   );
 
   test('can retrieve all users from REST API', async () => {

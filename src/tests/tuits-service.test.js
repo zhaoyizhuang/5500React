@@ -1,5 +1,28 @@
+import {
+    createTuit, deleteTuit, findTuitById, findAllTuits
+} from "../services/tuits-service";
+import {
+    createUser,
+    deleteUsersByUsername, findAllUsers,
+    findUserById
+} from "../services/users-service";
+
 describe('can create tuit with REST API', () => {
-  // TODO: implement this
+    const testUser = {
+        username: 'test',
+        password: 'testWord',
+        email: 'test@test.com'
+    };
+
+    beforeAll(() => {
+
+    })
+
+    afterAll(() => {
+        const p1 = deleteUsersByUsername(testUser.username);
+    })
+
+
 });
 
 describe('can delete tuit wtih REST API', () => {
