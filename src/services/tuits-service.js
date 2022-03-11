@@ -29,3 +29,11 @@ export const updateTuit = (tid, tuit) =>
 export const deleteTuit = (tid) =>
     axios.delete(`${TUITS_API}/${tid}`)
         .then(response => response.data);
+
+export const findUserByUsername = (username) =>
+    axios.get(`${USERS_API}/username/${username}/get`)
+        .then(response => response.data);
+
+export const deleteTuitsByUser = (uid) =>
+    axios.get(`${USERS_API}/${uid}/tuits/delete`)
+        .then(response => response.data);
