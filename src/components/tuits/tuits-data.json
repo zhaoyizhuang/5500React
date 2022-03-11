@@ -1,7 +1,7 @@
 [
   {
     "_id": "123",
-    "postedBy": {"username": "NASA"},
+    "postBy": {"username": "NASA"},
     "tuit": "In 2021, our @NASAPersevere Mars rover landed and our Ingenuity helicopter took flight. Two asteroid missions launched to the skies, and another began its journey home to Earth. A look back at highlights for our #NASAScience planetary missions: https://go.nasa.gov/32zX2fE",
     "image": "perseverance.jpg",
     "youtube": null,
@@ -16,7 +16,7 @@
   },
   {
     "_id": "234",
-    "postedBy": {"username": "NASA"},
+    "postBy": {"username": "NASA"},
     "tuit": "In 2021, our @NASAPersevere Mars rover landed and our Ingenuity helicopter took flight. Two asteroid missions launched to the skies, and another began its journey home to Earth. A look back at highlights for our #NASAScience planetary missions: https://go.nasa.gov/32zX2fE",
     "image": "perseverance.jpg",
     "youtube": null,
@@ -31,7 +31,7 @@
   },
   {
     "_id": "345",
-    "postedBy": {"username": "SpaceX"},
+    "postBy": {"username": "SpaceX"},
     "tuit": "@SpaceX Dragon spacecraft returns to Earth with @ISS_Research that could help us better understand neurodegenerative diseases, gene expression, & muscle atrophy. Undocking from the @Space_Station is at 9:05am ET (13:05 UT). Watch:",
     "image": null,
     "youtube": "https://www.youtube.com/embed/TeVbYCIFVa8",

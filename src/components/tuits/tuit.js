@@ -8,8 +8,8 @@ const Tuit = ({tuit, deleteTuit}) => {
     <li className="p-2 ttr-tuit list-group-item d-flex rounded-0">
       <div className="pe-2">
         {
-          tuit.postedBy &&
-          <img src={`../images/${tuit.postedBy.username}.jpg`}
+          tuit.postBy &&
+          <img src={`../images/${tuit.postBy.username}.jpg`}
                className="ttr-tuit-avatar-logo rounded-circle"/>
         }
       </div>
@@ -17,8 +17,8 @@ const Tuit = ({tuit, deleteTuit}) => {
           <i onClick={() => deleteTuit(tuit._id)} className="fas fa-remove fa-2x fa-pull-right"></i>
         <h2
           className="fs-5">
-          {tuit.postedBy && tuit.postedBy.username}
-          @{tuit.postedBy && tuit.postedBy.username} -
+          {tuit.postBy && tuit.postBy.username}
+          @{tuit.postBy && tuit.postBy.username} -
           {tuit.published}</h2>
         {tuit.tuit}
         {
