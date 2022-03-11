@@ -1,11 +1,16 @@
 import Tuits from "../components/tuits/index";
 import {screen, render} from "@testing-library/react";
 import {HashRouter} from "react-router-dom";
-import {findAllTuits} from "../services/tuits-service";
+import {
+    createTuit,
+    deleteTuitsByUser,
+    findAllTuits, findTuitByUser,
+    findUserByUsername
+} from "../services/tuits-service";
 import axios from "axios";
 import Tuit from "../components/tuits/tuit";
 
-import {createUser} from "../services/users-service";
+import {createUser, deleteUsersByUsername, findAllUsers} from "../services/users-service";
 import * as service from "../services/tuits-service";
 
 const MOCKED_USERS = [
@@ -16,14 +21,15 @@ const MOCKED_TUITS = [
   "alice's tuit", "bob's tuit", "charlie's tuit"
 ];
 
+const MockedTuits = [
+    {_id: "123", postBy: {username: "alice"}, tuit: "alice's tuit"},
+    {_id: "456", postBy: {username: "bob"}, tuit: "bob's tuit"},
+    {_id: "789", postBy: {username: "charlie"}, tuit: "charlie's tuit"}
+]
+
 const deleteTuit = (tid) => {}
 
 describe('tuit list renders static tuit array',  () => {
-    const MockedTuits = [
-        {_id: "123", postBy: {username: "alice"}, tuit: "alice's tuit"},
-        {_id: "456", postBy: {username: "bob"}, tuit: "bob's tuit"},
-        {_id: "789", postBy: {username: "charlie"}, tuit: "charlie's tuit"}
-    ]
 
     test('tuit list renders static tuit array', () => {
         // TODO: implement this
@@ -37,25 +43,100 @@ describe('tuit list renders static tuit array',  () => {
             expect(e).toBeInTheDocument();
         })
 
+        MOCKED_USERS.forEach(t => {
+            const e = screen.getByText(`${t}@${t} -`);
+            expect(e).toBeInTheDocument();
+        })
+
     });
 });
 
 
+describe('tuit list renders async', () => {
+    beforeAll(async () => {
+        let ind = 0;
+        for (const u of MOCKED_USERS) {
+            const newU = await createUser(
+                {
+                    username: u,
+                    password: `${u}456`,
+                    email: `${u}@test.com`
+                }
+                );
+            await createTuit(newU._id, {tuit: MOCKED_TUITS[ind++]});
+        }
+    });
 
-test('tuit list renders async', async () => {
-  const tuits = await findAllTuits();
-    render(
-        <HashRouter>
-            <Tuits tuits={tuits} deleteTuit={deleteTuit}/>
-        </HashRouter>);
+    afterAll(async () => {
+        const users = await findAllUsers();
+        const usersWeInserted = users.filter(
+            user => MOCKED_USERS.indexOf(user.username) >= 0);
+        for (const u of usersWeInserted) {
+            await deleteTuitsByUser(u._id);
+            await deleteUsersByUsername(u.username);
+        }
+    });
 
-    const tuit = screen.getByText("xx@xx -");
-    expect(tuit).toBeInTheDocument();
-    const user = screen.getByText("xxxxx");
-    expect(user).toBeInTheDocument();
-})
+    test('tuit list renders async', async () => {
+        const tuits = await findAllTuits();
+        render(
+            <HashRouter>
+                <Tuits tuits={tuits} deleteTuit={deleteTuit}/>
+            </HashRouter>);
+
+        MOCKED_TUITS.forEach(t => {
+            const e = screen.getByText(`${t}`);
+            expect(e).toBeInTheDocument();
+        })
+
+        MOCKED_USERS.forEach(t => {
+            const e = screen.getByText(`${t}@${t} -`);
+            expect(e).toBeInTheDocument();
+        })
+    })
+
+    test('tuit list renders async for alice', async () => {
+        const user = await findUserByUsername('alice');
+        const tuits = await findTuitByUser(user._id);
+        render(
+            <HashRouter>
+                <Tuits tuits={tuits} deleteTuit={deleteTuit}/>
+            </HashRouter>);
+
+        const tuit = screen.getByText(`alice's tuit`);
+        expect(tuit).toBeInTheDocument();
+        const username = screen.getByText(`alice@alice -`);
+        expect(username).toBeInTheDocument();
+
+    })
+});
 
 //jest.mock('axios');
-test('tuit list renders mocked', async () => {
-  // TODO: implement this
+describe('tuit list renders mocked',  () => {
+    test('tuit list renders mocked', async () => {
+        axios.get = jest.fn();
+        jest.mock('axios');
+        axios.get.mockImplementationOnce(
+            () => Promise
+                .resolve({ data: {tuits: MockedTuits} }));
+
+        const response = await findAllTuits();
+        const tuits = response.tuits;
+
+        render(
+            <HashRouter>
+                <Tuits tuits={tuits} deleteTuit={deleteTuit}/>
+            </HashRouter>);
+
+        MOCKED_TUITS.forEach(t => {
+            const e = screen.getByText(`${t}`);
+            expect(e).toBeInTheDocument();
+        })
+
+        MOCKED_USERS.forEach(t => {
+            const e = screen.getByText(`${t}@${t} -`);
+            expect(e).toBeInTheDocument();
+        })
+    });
 });
+

@@ -32,8 +32,10 @@ describe('user list renders mocked',  () => {
   test('user list renders mocked', async () => {
     axios.get = jest.fn();
     jest.mock('axios');
-    axios.get.mockImplementationOnce(() =>
-                                         Promise.resolve({ data: {users: MOCKED_USERS} }));
+    axios.get
+        .mockImplementationOnce(
+            () => Promise
+                .resolve({ data: {users: MOCKED_USERS} }));
     const response = await findAllUsers();
     const users = response.users;
 
