@@ -113,15 +113,16 @@ describe('findAllUsers',  () => {
   ];
 
   // setup data before test
-  beforeAll(() =>
+  beforeAll(async () => {
     // insert several known users
-    usernames.map(username =>
-      createUser({
-        username,
-        password: `${username}123`,
-        email: `${username}@stooges.com`
-      })
-    )
+    for (const username of usernames) {
+      await createUser(
+          {username,
+            password: `${username}123`,
+            email: `${username}@stooges.com`
+      });
+    }
+  }
   );
 
   // clean up after ourselves
