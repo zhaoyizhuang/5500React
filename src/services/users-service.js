@@ -1,6 +1,6 @@
 import axios from "axios";
-const BASE_URL = "https://zzy-assign3.herokuapp.com";
-// const BASE_URL = "http://localhost:4000";
+// const BASE_URL = "https://zzy-assign4.herokuapp.com";
+const BASE_URL = "http://localhost:4000";
 
 const LOGIN_API = `${BASE_URL}/login`;
 const USERS_API = `${BASE_URL}/users`;
