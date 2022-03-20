@@ -25,7 +25,6 @@ export const Login = () => {
             <button onClick={login}
                     className="btn btn-primary mb-5">Login
             </button>
-            <Signup/>
         </div>
     );
 };
