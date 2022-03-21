@@ -7,10 +7,15 @@ import Signup from "./signup";
 export const Login = () => {
     const [loginUser, setLoginUser] = useState({});
     const navigate = useNavigate()
-    const login = () =>
+    const login = () => {
+        if (loginUser.username === undefined || loginUser.password === undefined) {
+            alert('empty input');
+            return;
+        }
         service.login(loginUser)
             .then((user) => navigate('/profile/mytuits'))
             .catch(e => alert(e));
+    }
     return (
         <div>
             <h1>Login</h1>

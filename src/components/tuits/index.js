@@ -3,6 +3,7 @@ import './tuits.css';
 import Tuit from "./tuit";
 import * as likesService from "../../services/likes-service";
 import * as service from "../../services/tuits-service";
+import {findAllTuitsLikedByUser} from "../../services/likes-service";
 const Tuits = ({tuits = [], refreshTuits}) => {
     const likeTuit = (tuit) =>
         likesService.userLikesTuit("me", tuit._id)
@@ -10,7 +11,10 @@ const Tuits = ({tuits = [], refreshTuits}) => {
             .catch(e => alert(e))
     const deleteTuit = (tid) =>
         service.deleteTuit(tid)
-            .then(refreshTuits);
+            .then(refreshTuits)
+
+    // console.log("tuit");
+    // console.log(tuits[0].doesUserLikeTheTuit);
 
     return (
         <div>
