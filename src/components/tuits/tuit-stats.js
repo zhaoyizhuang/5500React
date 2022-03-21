@@ -1,38 +1,24 @@
 import React, {useState} from "react";
-import {findAllTuitsLikedByUser} from "../../services/likes-service";
-import {findAllTuitsDislikedByUser} from "../../services/dislikes-service";
 
-const TuitStats = ({tuit, likeTuit = () => {}, dislikeTuit = () => {}}) => {
-    const [like, setLike] = useState(false);
-    const [dislike, setDislike] = useState(false);
-    const clickLike = () => {
-        likeTuit(tuit);
-        if (dislike) dislikeTuit(tuit);
-    }
-    const clickDislike = () => {
-        dislikeTuit(tuit);
-        if (like) likeTuit(tuit);
-    }
-    findAllTuitsLikedByUser("me").then(result => {
-        for (let i = 0; i < result.length; i++) {
-            if(result[i]._id === tuit._id) {
-                // console.log(like);
-                setLike(true);
-                return;
-            }
+const TuitStats = ({tuit, likeTuit = () => {}, dislikeTuit = () => {},
+                       Ilike, Idislike, setIlike, setIdislike}) => {
+
+    const clickLike = async () => {
+        await likeTuit(tuit);
+        setIlike(!Ilike)
+        if (Idislike) {
+            await dislikeTuit(tuit);
+            setIdislike(false);
         }
-        setLike(false);
-    });
-    findAllTuitsDislikedByUser("me").then(result => {
-        for (let i = 0; i < result.length; i++) {
-            if(result[i]._id === tuit._id) {
-                // console.log(like);
-                setDislike(true);
-                return;
-            }
+    }
+    const clickDislike = async () => {
+        await dislikeTuit(tuit);
+        setIdislike(!Idislike)
+        if (Ilike) {
+            await likeTuit(tuit);
+            setIlike(false);
         }
-        setDislike(false);
-    });
+    }
 
     return (
         <div className="row mt-2">
@@ -46,13 +32,13 @@ const TuitStats = ({tuit, likeTuit = () => {}, dislikeTuit = () => {}}) => {
             </div>
             <div className="col">
           <span onClick={() => clickLike()}>
-              {<i className="fas fa-heart me-1" style={{color: like? 'red':'gray'}}></i>}
+              {<i className="fas fa-heart me-1" style={{color: Ilike? 'red':'#D3D6F1'}}></i>}
               {tuit.stats && tuit.stats.likes}
           </span>
             </div>
             <div className="col">
                 <span onClick={() => clickDislike()}>
-                    {<i className="fas fa-heart me-1" style={{color: dislike? 'black':'gray'}}></i>}
+                    {<i className="fas fa-heart me-1" style={{color: Idislike? 'black':'#D3D6F1'}}></i>}
                     {tuit.stats && tuit.stats.dislikes}
                 </span>
             </div>

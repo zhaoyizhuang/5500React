@@ -1,10 +1,12 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import TuitStats from "./tuit-stats";
 import TuitImage from "./tuit-image";
 import TuitVideo from "./tuit-video";
 import {useNavigate, Link} from "react-router-dom";
+import {findAllTuitsLikedByUser} from "../../services/likes-service";
+import {findAllTuitsDislikedByUser} from "../../services/dislikes-service";
 
-const Tuit = ({tuit, deleteTuit, likeTuit, dislikeTuit}) => {
+const Tuit = ({tuit = {}, deleteTuit, likeTuit, dislikeTuit}) => {
     const navigate = useNavigate();
     const daysOld = (tuit) => {
         const now = new Date();
@@ -28,6 +30,27 @@ const Tuit = ({tuit, deleteTuit, likeTuit, dislikeTuit}) => {
         }
         return old;
     }
+
+    const [Ilike,setIlike] = useState(false);
+    const [Idislike,setIdislike] = useState(false);
+    useEffect(() => {
+        findAllTuitsLikedByUser("me").then(result => {
+            for (let i = 0; i < result.length; i++) {
+                if (result[i]._id === tuit._id) {
+                    setIlike(true)
+                }
+            }
+        })
+    },[]);
+    useEffect(() => {
+        findAllTuitsDislikedByUser("me").then(result => {
+            for (let i = 0; i < result.length; i++) {
+                if (result[i]._id === tuit._id) {
+                    setIdislike(true)
+                }
+            }
+        })
+    },[]);
     return(
         // <li onClick={() => navigate(`/tuit/${tuit._id}`)}
         <li className="p-2 ttr-tuit list-group-item d-flex rounded-0">
@@ -57,7 +80,9 @@ const Tuit = ({tuit, deleteTuit, likeTuit, dislikeTuit}) => {
                     tuit.image &&
                     <TuitImage tuit={tuit}/>
                 }
-                <TuitStats tuit={tuit} likeTuit={likeTuit} dislikeTuit={dislikeTuit}/>
+                <TuitStats tuit={tuit} likeTuit={likeTuit} dislikeTuit={dislikeTuit}
+                           Ilike={Ilike} Idislike={Idislike}
+                           setIdislike={setIdislike} setIlike={setIlike}/>
             </div>
         </li>
     );
