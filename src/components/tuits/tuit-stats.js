@@ -1,14 +1,16 @@
 import React, {useState} from "react";
 import {findAllTuitsLikedByUser} from "../../services/likes-service";
+import {findAllTuitsDislikedByUser} from "../../services/dislikes-service";
 
-const TuitStats = ({tuit, likeTuit = () => {}}) => {
+const TuitStats = ({tuit, likeTuit = () => {}, dislikeTuit = () => {}}) => {
     const [like, setLike] = useState(false);
     const [dislike, setDislike] = useState(false);
     const clickLike = () => {
         likeTuit(tuit);
-        if (dislike) return;
+        if (dislike) dislikeTuit(tuit);
     }
     const clickDislike = () => {
+        dislikeTuit(tuit);
         if (like) likeTuit(tuit);
     }
     findAllTuitsLikedByUser("me").then(result => {
@@ -21,6 +23,17 @@ const TuitStats = ({tuit, likeTuit = () => {}}) => {
         }
         setLike(false);
     });
+    findAllTuitsDislikedByUser("me").then(result => {
+        for (let i = 0; i < result.length; i++) {
+            if(result[i]._id === tuit._id) {
+                // console.log(like);
+                setDislike(true);
+                return;
+            }
+        }
+        setDislike(false);
+    });
+
     return (
         <div className="row mt-2">
             <div className="col">
@@ -38,7 +51,10 @@ const TuitStats = ({tuit, likeTuit = () => {}}) => {
           </span>
             </div>
             <div className="col">
-                {<i className="fas fa-heart me-1" style={{color: dislike? 'black':'gray'}}></i>}
+                <span onClick={() => clickDislike()}>
+                    {<i className="fas fa-heart me-1" style={{color: dislike? 'black':'gray'}}></i>}
+                    {tuit.stats && tuit.stats.dislikes}
+                </span>
             </div>
             <div className="col">
                 <i className="far fa-inbox-out"></i>
