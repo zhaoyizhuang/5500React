@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 
 const TuitStats = ({tuit, likeTuit = () => {}, dislikeTuit = () => {},
-                       Ilike, Idislike, setIlike, setIdislike}) => {
+                       Ilike, Idislike, setIlike, setIdislike, likeNum, dislikeNum}) => {
 
     const clickLike = async () => {
         await likeTuit(tuit);
@@ -32,13 +32,13 @@ const TuitStats = ({tuit, likeTuit = () => {}, dislikeTuit = () => {},
             </div>
             <div className="col">
           <span onClick={() => clickLike()}>
-              {<i className="fas fa-heart me-1" style={{color: Ilike? 'red':'#D3D6F1'}}></i>}
+              {<i className="fa-solid fa-thumbs-up" style={{color: Ilike? 'red':'#D3D6F1'}}></i>}
               {tuit.stats && tuit.stats.likes}
           </span>
             </div>
             <div className="col">
                 <span onClick={() => clickDislike()}>
-                    {<i className="fas fa-heart me-1" style={{color: Idislike? 'black':'#D3D6F1'}}></i>}
+                    {<i className="fa-solid fa-thumbs-down" style={{color: Idislike? 'black':'#D3D6F1'}}></i>}
                     {tuit.stats && tuit.stats.dislikes}
                 </span>
             </div>

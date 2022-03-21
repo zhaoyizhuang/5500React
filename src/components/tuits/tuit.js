@@ -43,6 +43,7 @@ const Tuit = ({tuit = {}, deleteTuit, likeTuit, dislikeTuit}) => {
         })
     },[]);
     useEffect(() => {
+        let isMounted
         findAllTuitsDislikedByUser("me").then(result => {
             for (let i = 0; i < result.length; i++) {
                 if (result[i]._id === tuit._id) {
@@ -82,7 +83,9 @@ const Tuit = ({tuit = {}, deleteTuit, likeTuit, dislikeTuit}) => {
                 }
                 <TuitStats tuit={tuit} likeTuit={likeTuit} dislikeTuit={dislikeTuit}
                            Ilike={Ilike} Idislike={Idislike}
-                           setIdislike={setIdislike} setIlike={setIlike}/>
+                           setIdislike={setIdislike} setIlike={setIlike}
+                           likeNum={tuit.stats&&tuit.stats.likes}
+                           dislikeNum={tuit.stats&&tuit.stats.dislikes}/>
             </div>
         </li>
     );
