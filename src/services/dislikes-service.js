@@ -1,7 +1,7 @@
 import axios from "axios";
+import {AssignUrl} from "./URL";
 
-// const BASE_URL = "https://zzy-assign4.herokuapp.com";
-const BASE_URL = "http://localhost:4000";
+const BASE_URL = AssignUrl;
 const USERS_API = `${BASE_URL}/users`;
 const TUITS_API = `${BASE_URL}/tuits`;
 

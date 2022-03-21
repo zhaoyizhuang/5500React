@@ -1,9 +1,10 @@
 import axios from "axios";
+import {AssignUrl} from "./URL";
 
 // const TUITS_API = "https://zzy-assign4.herokuapp.com/tuits";
 // const USERS_API = "https://zzy-assign4.herokuapp.com/users";
-const TUITS_API = "http://localhost:4000/tuits";
-const USERS_API = "http://localhost:4000/users";
+const TUITS_API = AssignUrl + "/tuits";
+const USERS_API = AssignUrl + "/users";
 
 const api = axios.create({
                              withCredentials: true

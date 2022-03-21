@@ -1,9 +1,7 @@
 import axios from "axios";
-// const BASE_URL = "https://zzy-assign4.herokuapp.com";
-const BASE_URL = "http://localhost:4000";
-// const BASE_URL = process.env.REACT_APP_BASE_URL;
+import {AssignUrl} from "./URL";
 
-const SECURITY_API = `${BASE_URL}/auth`;
+const SECURITY_API = `${AssignUrl}/auth`;
 
 const api = axios.create({withCredentials: true});
 
