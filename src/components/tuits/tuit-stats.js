@@ -3,9 +3,13 @@ import {findAllTuitsLikedByUser} from "../../services/likes-service";
 
 const TuitStats = ({tuit, likeTuit = () => {}}) => {
     const [like, setLike] = useState(false);
-    const click = () => {
+    const [dislike, setDislike] = useState(false);
+    const clickLike = () => {
         likeTuit(tuit);
-
+        if (dislike) return;
+    }
+    const clickDislike = () => {
+        if (like) likeTuit(tuit);
     }
     findAllTuitsLikedByUser("me").then(result => {
         for (let i = 0; i < result.length; i++) {
@@ -28,10 +32,13 @@ const TuitStats = ({tuit, likeTuit = () => {}}) => {
                 {tuit.stats && tuit.stats.retuits}
             </div>
             <div className="col">
-          <span onClick={() => click()}>
+          <span onClick={() => clickLike()}>
               {<i className="fas fa-heart me-1" style={{color: like? 'red':'gray'}}></i>}
               {tuit.stats && tuit.stats.likes}
           </span>
+            </div>
+            <div className="col">
+                {<i className="fas fa-heart me-1" style={{color: dislike? 'black':'gray'}}></i>}
             </div>
             <div className="col">
                 <i className="far fa-inbox-out"></i>
