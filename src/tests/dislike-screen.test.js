@@ -3,7 +3,11 @@ import {HashRouter} from "react-router-dom";
 import Profile from "../components/profile";
 import {createUser} from "../services/users-service";
 import {deleteUsersByUsername, createTuit, deleteTuitsByUser, findUserByUsername} from "../services/tuits-service";
-import {userDislikesTuit} from "../services/dislikes-service";
+import {
+    findAllTuitsDislikedByUser,
+    findAllUsersThatDislikedTuit,
+    userDislikesTuit
+} from "../services/dislikes-service";
 test('dislike button in profile', async () => {
     render(
         <HashRouter>
