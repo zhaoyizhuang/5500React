@@ -5,19 +5,11 @@ const TuitStats = ({tuit, likeTuit = () => {}, dislikeTuit = () => {},
 
     const clickLike = async () => {
         await likeTuit(tuit);
-        setIlike(!Ilike)
-        if (Idislike) {
-            await dislikeTuit(tuit);
-            setIdislike(false);
-        }
+        setIlike(!Ilike);
     }
     const clickDislike = async () => {
         await dislikeTuit(tuit);
-        setIdislike(!Idislike)
-        if (Ilike) {
-            await likeTuit(tuit);
-            setIlike(false);
-        }
+        setIdislike(!Idislike);
     }
 
     return (

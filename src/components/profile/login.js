@@ -12,6 +12,7 @@ export const Login = () => {
             alert('empty input');
             return;
         }
+        console.log(loginUser);
         service.login(loginUser)
             .then((user) => navigate('/profile/mytuits'))
             .catch(e => alert(e));

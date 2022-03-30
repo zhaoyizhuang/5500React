@@ -40,4 +40,8 @@ export const findUserByUsername = (username) =>
 
 export const deleteTuitsByUser = (uid) =>
     api.get(`${USERS_API}/${uid}/tuits/delete`)
+        .then(response => response.data)
+
+export const deleteUsersByUsername = (username) =>
+    api.get(`${USERS_API}/username/${username}/delete`)
         .then(response => response.data);
