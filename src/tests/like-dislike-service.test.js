@@ -175,4 +175,18 @@ describe('user dislike and like UI', () => {
         expect(likes.firstChild).toHaveClass("fa-solid fa-thumbs-up");
         expect(likes.firstChild).toHaveStyle("color: #D3D6F1");
     });
+
+    test('mock', async () => {
+        jest.spyOn(React, 'useEffect').mockImplementation(f => Promise
+            .resolve({ data: {tuits: MockTuit} }));
+        // render(
+        //     <HashRouter>
+        //         <Tuit key={MockTuit._id}
+        //               tuit={MockTuit}/>
+        //     </HashRouter>);
+        // let dislikes = screen.getByText(`2`);
+        // expect(dislikes.firstChild).toHaveClass("fa-solid fa-thumbs-down");
+        // expect(dislikes.firstChild).toHaveStyle("color: black");
+
+    });
 })
