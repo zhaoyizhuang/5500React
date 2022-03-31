@@ -22,6 +22,46 @@ describe('user dislikes a tuit', () => {
     let uId;
 
     beforeAll(async () => {
+        await deleteUsersByUsername('test');
+        //create user
+        const newU = await createUser(
+            {
+                username: 'test',
+                password: `test`,
+                email: `test`
+            }
+        ).then(data => uId = data._id);
+        //create tuit
+        const newTuit = await createTuit(uId, {tuit: "test"})
+            .then(data => tuitId = data._id);
+
+        //dislike tuit
+        await userDislikesTuit(uId, tuitId);
+    })
+    afterAll(async () => {
+        await userDislikesTuit(uId, tuitId);
+        //delete tuit
+        await deleteTuitsByUser(uId);
+        //delete user
+        await deleteUsersByUsername('test');
+    })
+
+    test('disliked tuits are shown in the dislike-screen', async () => {
+        render(
+            <HashRouter>
+                <Profile />
+            </HashRouter>);
+        const dislikes = screen.getByText(`Dislikes`);
+        expect(dislikes).toBeInTheDocument();
+    })
+})
+
+describe('user likes a tuit', () => {
+    let tuitId;
+    let uId;
+
+    beforeAll(async () => {
+        await deleteUsersByUsername('test');
         //create user
         const newU = await createUser(
             {

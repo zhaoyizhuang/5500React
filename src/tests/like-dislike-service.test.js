@@ -1,5 +1,5 @@
 import services, {createUser} from "../services/users-service";
-import {render} from "@testing-library/react";
+import {queryAllByText, render, screen} from "@testing-library/react";
 import {HashRouter} from "react-router-dom";
 import Tuits from "../components/tuits";
 import axios from "axios";
@@ -14,6 +14,10 @@ import {
     findAllUsersThatLikedTuit,
     userLikesTuit
 } from "../services/likes-service";
+import Tuit from "../components/tuits/tuit";
+import TuitStats from "../components/tuits/tuit-stats";
+import Profile from "../components/profile";
+import React from "react";
 
 describe('user dislike and like actions', () => {
     let tuitId;
@@ -138,4 +142,37 @@ describe('user dislike and like actions', () => {
         //the tuit is undisliked by the user;
         expect(count).toBeLessThanOrEqual(prevCount2);
     })
+})
+
+describe('user dislike and like UI', () => {
+    const MockTuit = {_id: "123", postBy: {username: "alice"}, tuit: "alice's tuit",
+        stats: { replies: 0, retuits: 0, likes: 1, dislikes: 2 }};
+
+    test('user likes UI', async () => {
+        render(
+            <HashRouter>
+                <TuitStats tuit={MockTuit}
+                           Ilike={true} Idislike={false}/>
+            </HashRouter>);
+        let dislikes = screen.getByText(`2`);
+        expect(dislikes.firstChild).toHaveClass("fa-solid fa-thumbs-down");
+        expect(dislikes.firstChild).toHaveStyle("color: #D3D6F1");
+        let likes = screen.getByText('1');
+        expect(likes.firstChild).toHaveClass("fa-solid fa-thumbs-up");
+        expect(likes.firstChild).toHaveStyle("color: red");
+    });
+
+    test('user dislikes UI', async () => {
+        render(
+            <HashRouter>
+                <TuitStats tuit={MockTuit}
+                           Ilike={false} Idislike={true}/>
+            </HashRouter>);
+        let dislikes = screen.getByText(`2`);
+        expect(dislikes.firstChild).toHaveClass("fa-solid fa-thumbs-down");
+        expect(dislikes.firstChild).toHaveStyle("color: black");
+        let likes = screen.getByText('1');
+        expect(likes.firstChild).toHaveClass("fa-solid fa-thumbs-up");
+        expect(likes.firstChild).toHaveStyle("color: #D3D6F1");
+    });
 })

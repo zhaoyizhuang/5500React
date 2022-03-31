@@ -1,8 +1,20 @@
 import React, {useState} from "react";
 
+/**
+ * Stats of a tuit
+ *
+ * @param tuit tuit instance.
+ * @param likeTuit likeTuit function
+ * @param dislikeTuit dislikeTuit function
+ * @param Ilike if the user likes this tuit
+ * @param Idislike if the user dislikes this tuit
+ * @param setIlike set if the user likes the tuit
+ * @param setIdislike set if the user dislikes the tuit
+ */
 const TuitStats = ({tuit, likeTuit = () => {}, dislikeTuit = () => {},
-                       Ilike, Idislike, setIlike, setIdislike, likeNum, dislikeNum}) => {
+                       Ilike, Idislike, setIlike, setIdislike}) => {
 
+    // toggle likes button
     const clickLike = async () => {
         await likeTuit(tuit);
         setIlike(!Ilike);

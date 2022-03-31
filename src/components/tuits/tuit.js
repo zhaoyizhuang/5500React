@@ -83,9 +83,7 @@ const Tuit = ({tuit = {}, deleteTuit, likeTuit, dislikeTuit}) => {
                 }
                 <TuitStats tuit={tuit} likeTuit={likeTuit} dislikeTuit={dislikeTuit}
                            Ilike={Ilike} Idislike={Idislike}
-                           setIdislike={setIdislike} setIlike={setIlike}
-                           likeNum={tuit.stats&&tuit.stats.likes}
-                           dislikeNum={tuit.stats&&tuit.stats.dislikes}/>
+                           setIdislike={setIdislike} setIlike={setIlike}/>
             </div>
         </li>
     );
