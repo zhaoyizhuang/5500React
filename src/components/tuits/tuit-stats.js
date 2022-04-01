@@ -19,6 +19,7 @@ const TuitStats = ({tuit, likeTuit = () => {}, dislikeTuit = () => {},
         await likeTuit(tuit);
         setIlike(!Ilike);
     }
+    //toggle dislike button
     const clickDislike = async () => {
         await dislikeTuit(tuit);
         setIdislike(!Idislike);

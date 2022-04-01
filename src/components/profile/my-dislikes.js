@@ -7,10 +7,13 @@ import {useEffect, useState} from "react";
  *
  */
 const MyDislikes = () => {
+    //state for the array of dislike tuits
     const [dislikedTuits, setDislikedTuis] = useState([]);
     const findTuitsIDislike = () =>
         service.findAllTuitsDislikedByUser("me")
             .then((tuits) => setDislikedTuis(tuits));
+
+    //update the dislike tuits every the user toggle the dislike button.
     useEffect(findTuitsIDislike, []);
 
     return(
