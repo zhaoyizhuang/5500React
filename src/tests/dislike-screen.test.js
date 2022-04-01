@@ -1,5 +1,5 @@
 import {render, screen} from "@testing-library/react";
-import {HashRouter} from "react-router-dom";
+import {HashRouter, Route} from "react-router-dom";
 import Profile from "../components/profile";
 import {createUser} from "../services/users-service";
 import {deleteUsersByUsername, createTuit, deleteTuitsByUser, findUserByUsername} from "../services/tuits-service";
@@ -8,6 +8,9 @@ import {
     findAllUsersThatDislikedTuit,
     userDislikesTuit
 } from "../services/dislikes-service";
+import TuitStats from "../components/tuits/tuit-stats";
+import MyTuits from "../components/profile/my-tuits";
+import React from "react";
 test('dislike button in profile', async () => {
     render(
         <HashRouter>
@@ -94,3 +97,4 @@ describe('user likes a tuit', () => {
         expect(dislikes).toBeInTheDocument();
     })
 })
+

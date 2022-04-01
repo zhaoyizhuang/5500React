@@ -28,22 +28,22 @@ const TuitStats = ({tuit, likeTuit = () => {}, dislikeTuit = () => {},
         <div className="row mt-2">
             <div className="col">
                 <i className="far fa-message me-1"></i>
-                {tuit.stats && tuit.stats.replies}
+                <span className="ttr-stats-replies">{tuit.stats && tuit.stats.replies}</span>
             </div>
             <div className="col">
                 <i className="far fa-retweet me-1"></i>
-                {tuit.stats && tuit.stats.retuits}
+                <span className="ttr-stats-retuits">{tuit.stats && tuit.stats.retuits}</span>
             </div>
             <div className="col">
-          <span onClick={() => clickLike()}>
+          <span className="ttr-like-tuit-click" onClick={() => clickLike()}>
               {<i className="fa-solid fa-thumbs-up" style={{color: Ilike? 'red':'#D3D6F1'}}></i>}
-              {tuit.stats && tuit.stats.likes}
+              <span className="ttr-stats-likes">{tuit.stats && tuit.stats.likes}</span>
           </span>
             </div>
             <div className="col">
-                <span onClick={() => clickDislike()}>
+                <span className="ttr-dislike-tuit-click" onClick={() => clickDislike()}>
                     {<i className="fa-solid fa-thumbs-down" style={{color: Idislike? 'black':'#D3D6F1'}}></i>}
-                    {tuit.stats && tuit.stats.dislikes}
+                    <span className="ttr-stats-dislikes">{tuit.stats && tuit.stats.dislikes}</span>
                 </span>
             </div>
             <div className="col">

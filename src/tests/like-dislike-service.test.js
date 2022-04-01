@@ -1,3 +1,4 @@
+import {act, create} from 'react-test-renderer';
 import services, {createUser} from "../services/users-service";
 import {queryAllByText, render, screen} from "@testing-library/react";
 import {HashRouter} from "react-router-dom";
@@ -19,7 +20,7 @@ import TuitStats from "../components/tuits/tuit-stats";
 import Profile from "../components/profile";
 import React from "react";
 
-describe('user dislike and like actions', () => {
+describe('user dislike and like API endpoints', () => {
     let tuitId;
     let uId;
     let prevCount1;
@@ -146,47 +147,128 @@ describe('user dislike and like actions', () => {
 
 describe('user dislike and like UI', () => {
     const MockTuit = {_id: "123", postBy: {username: "alice"}, tuit: "alice's tuit",
-        stats: { replies: 0, retuits: 0, likes: 1, dislikes: 2 }};
+        stats: { replies: 0, retuits: 0, likes: 13123, dislikes: 21123 }};
 
-    test('user likes UI', async () => {
+    test('UI of a liked tuit', async () => {
         render(
             <HashRouter>
                 <TuitStats tuit={MockTuit}
                            Ilike={true} Idislike={false}/>
             </HashRouter>);
-        let dislikes = screen.getByText(`2`);
-        expect(dislikes.firstChild).toHaveClass("fa-solid fa-thumbs-down");
-        expect(dislikes.firstChild).toHaveStyle("color: #D3D6F1");
-        let likes = screen.getByText('1');
-        expect(likes.firstChild).toHaveClass("fa-solid fa-thumbs-up");
-        expect(likes.firstChild).toHaveStyle("color: red");
+        let dislikes = screen.getByText(`21123`);
+        expect(dislikes).toHaveClass("ttr-stats-dislikes");
+        expect(dislikes.parentElement.firstChild).toHaveStyle("color: #D3D6F1");
+        let likes = screen.getByText('13123');
+        expect(likes).toHaveClass("ttr-stats-likes");
+        expect(likes.parentElement.firstChild).toHaveStyle("color: red");
     });
 
-    test('user dislikes UI', async () => {
+    test('UI of a disliked tuit', async () => {
         render(
             <HashRouter>
                 <TuitStats tuit={MockTuit}
                            Ilike={false} Idislike={true}/>
             </HashRouter>);
-        let dislikes = screen.getByText(`2`);
-        expect(dislikes.firstChild).toHaveClass("fa-solid fa-thumbs-down");
-        expect(dislikes.firstChild).toHaveStyle("color: black");
-        let likes = screen.getByText('1');
-        expect(likes.firstChild).toHaveClass("fa-solid fa-thumbs-up");
-        expect(likes.firstChild).toHaveStyle("color: #D3D6F1");
+        let dislikes = screen.getByText(`21123`);
+        expect(dislikes).toHaveClass("ttr-stats-dislikes");
+        expect(dislikes.parentElement.firstChild).toHaveStyle("color: black");
+        let likes = screen.getByText('13123');
+        expect(likes).toHaveClass("ttr-stats-likes");
+        expect(likes.parentElement.firstChild).toHaveStyle("color: #D3D6F1");
     });
 
-    test('mock', async () => {
-        jest.spyOn(React, 'useEffect').mockImplementation(f => Promise
-            .resolve({ data: {tuits: MockTuit} }));
-        // render(
-        //     <HashRouter>
-        //         <Tuit key={MockTuit._id}
-        //               tuit={MockTuit}/>
-        //     </HashRouter>);
-        // let dislikes = screen.getByText(`2`);
-        // expect(dislikes.firstChild).toHaveClass("fa-solid fa-thumbs-down");
-        // expect(dislikes.firstChild).toHaveStyle("color: black");
+    test('User clicks the like button', async () => {
+        let stats = {
+            likes: 123
+        }
 
+        const likeTuit = () => {
+            act(() => {
+                stats.likes++;
+                tuitStats.update(
+                    <TuitStats
+                        tuit={{stats: stats}}
+                        Ilike={true}
+                        Idislike={false}
+                        setIlike={() => {}}
+                        setIdislike={() => {}}
+                        likeTuit={() => {}}
+                    />)
+            })
+        }
+
+        let tuitStats
+        act(() => {
+            tuitStats = create(
+                <TuitStats
+                    likeTuit={likeTuit}
+                    Ilike={false}
+                    Idislike={false}
+                    setIlike={() => {}}
+                    setIdislike={() => {}}
+                    tuit={{stats: stats}}/>
+            );
+        })
+
+        const root = tuitStats.root;
+        const likesCounter = root.findByProps({className: 'ttr-stats-likes'})
+        const likeTuitButton = root.findByProps(
+            {className: 'ttr-like-tuit-click'})
+
+
+        let likesText = likesCounter.children[0];
+        expect(likesText).toBe('123');
+
+        act(() => {likeTuitButton.props.onClick()})
+        likesText = likesCounter.children[0];
+        expect(likesText).toBe('124');
+    });
+
+    test('User clicks the dislike button', async () => {
+        let stats = {
+            dislikes: 123
+        }
+
+        const dislikeTuit = () => {
+            act(() => {
+                stats.dislikes++;
+                tuitStats.update(
+                    <TuitStats
+                        tuit={{stats: stats}}
+                        Ilike={false}
+                        Idislike={true}
+                        setIlike={() => {}}
+                        setIdislike={() => {}}
+                        likeTuit={() => {}}
+                    />)
+            })
+        }
+
+        let tuitStats
+        act(() => {
+            tuitStats = create(
+                <TuitStats
+                    likeTuit={() => {}}
+                    dislikeTuit={dislikeTuit}
+                    Ilike={false}
+                    Idislike={false}
+                    setIlike={() => {}}
+                    setIdislike={() => {}}
+                    tuit={{stats: stats}}/>
+            );
+        })
+
+        const root = tuitStats.root;
+        const dislikesCounter = root.findByProps({className: 'ttr-stats-dislikes'})
+        const dislikeTuitButton = root.findByProps(
+            {className: 'ttr-dislike-tuit-click'})
+
+
+        let dislikesText = dislikesCounter.children[0];
+        expect(dislikesText).toBe('123');
+
+        act(() => {dislikeTuitButton.props.onClick()})
+        dislikesText = dislikesCounter.children[0];
+        expect(dislikesText).toBe('124');
     });
 })
