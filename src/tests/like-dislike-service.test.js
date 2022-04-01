@@ -214,14 +214,16 @@ describe('user dislike and like UI', () => {
         const likesCounter = root.findByProps({className: 'ttr-stats-likes'})
         const likeTuitButton = root.findByProps(
             {className: 'ttr-like-tuit-click'})
+        const thumb = root.findByProps({className: "fa-solid fa-thumbs-up"})
 
-
+        expect(thumb.props.style.color).toBe('#D3D6F1' )
         let likesText = likesCounter.children[0];
         expect(likesText).toBe('123');
 
         act(() => {likeTuitButton.props.onClick()})
         likesText = likesCounter.children[0];
         expect(likesText).toBe('124');
+        expect(thumb.props.style.color).toBe('red' )
     });
 
     test('User clicks the dislike button', async () => {
@@ -262,13 +264,15 @@ describe('user dislike and like UI', () => {
         const dislikesCounter = root.findByProps({className: 'ttr-stats-dislikes'})
         const dislikeTuitButton = root.findByProps(
             {className: 'ttr-dislike-tuit-click'})
+        const thumb = root.findByProps({className: "fa-solid fa-thumbs-down"})
 
-
+        expect(thumb.props.style.color).toBe('#D3D6F1' )
         let dislikesText = dislikesCounter.children[0];
         expect(dislikesText).toBe('123');
 
         act(() => {dislikeTuitButton.props.onClick()})
         dislikesText = dislikesCounter.children[0];
         expect(dislikesText).toBe('124');
+        expect(thumb.props.style.color).toBe('black' )
     });
 })
